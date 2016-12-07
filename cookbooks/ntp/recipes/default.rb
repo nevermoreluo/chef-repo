@@ -114,16 +114,6 @@ execute 'Force sync hardware clock with system clock' do
   only_if { node['ntp']['sync_hw_clock'] && !(platform_family?('windows') || platform_family?('freebsd')) }
 end
 
-if node.role? 'cnproxy'
-  file '/etc/squid3/conf.d/output-address.conf' do
-    content ''
-    owner     'root'
-    group     'root'
-    mode      0644
-    notifies  :restart, 'service[squid3]', :delayed
-  end
-end
-
 service node['ntp']['service'] do
   supports status: true, restart: true
   action [:enable, :start]
