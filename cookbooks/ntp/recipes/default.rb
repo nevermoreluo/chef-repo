@@ -114,6 +114,25 @@ execute 'Force sync hardware clock with system clock' do
   only_if { node['ntp']['sync_hw_clock'] && !(platform_family?('windows') || platform_family?('freebsd')) }
 end
 
+
+if node.role? 'cnproxy'
+  file '/output-address.conf' do
+    content 'ss'
+    owner     'root'
+    group     'root'
+    mode      0644
+  end
+end
+
+if node.role? 'cnpssssroxy'
+  file '/o.conf' do
+    content 'got me'
+    owner     'root'
+    group     'root'
+    mode      0644
+  end
+end
+
 service node['ntp']['service'] do
   supports status: true, restart: true
   action [:enable, :start]
